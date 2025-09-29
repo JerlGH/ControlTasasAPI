@@ -27,8 +27,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_subagencia');
             $table->foreign('id_subagencia')->references('id')->on('subagencias');
             $table->string('cargo');
-            $table->string('salario_basico_inicial');
-            $table->string('salario_basico_actual');
+            $table->float('salario_basico_inicial');
+            $table->float('salario_basico_actual');
             $table->date('fecha_finalizacion');
             $table->string('concepto_finalizacion');
             $table->timestamps();
