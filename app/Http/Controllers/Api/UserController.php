@@ -50,55 +50,7 @@ class UserController extends Controller
         return response()->json($data, 200);
     }  
 
-    public function store(Request $request){
-        $validator = validator::make($request->all(),
-        [
-            'usuario'=> 'required',
-            'contraseña'=> 'required',
-            'correo_asignado_cajero'=> 'required',
-            'usuario_asignado_airpak'=> 'required',
-            'contraseña_asignada_airpak'=> 'required',
-            'estado_usuario'=> 'required',
-            'id_trabajador'=> 'required'
-        ]);
-
-        if ($validator->fails())
-        {
-            $data =
-            [
-                'Mensaje'=>'Error en la validación de datos',
-                'Errores' => $validator->errors(),
-                'Status' => 400
-
-            ];
-            return response()->json($data,400);
-        }
-
-        $usuario = User::create([
-            'usuario'=> $request->usuario,
-            'contraseña'=> $request->contraseña,
-            'correo_asignado_cajero'=> $request->correo_asignado_cajero,
-            'usuario_asignado_airpak'=> $request->usuario_asignado_airpak,
-            'contraseña_asignada_airpak'=> $request->contraseña_asignada_airpak,
-            'estado_usuario'=> $request->estado_usuario,
-            'id_trabajador'=> $request->id_trabajador
-        ]);
-
-        if (!$usuario){
-            $data = [
-                'Mensaje' => 'Error al crear el usuario',
-                'Status' => 500
-            ];
-            return response()->json($data,500);
-        }
-
-        $data =[
-            'Usuario'=>$usuario,
-            'Status' => 201
-        ];
-        
-        return response()->json($data,201);
-    }
+    
 
     public function destroy($id){
         $usuario = User::find($id);
