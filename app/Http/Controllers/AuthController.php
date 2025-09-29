@@ -118,23 +118,7 @@ class AuthController extends Controller
         return response()->json($data,200);
     }
 
-   /*
-    public function logout(Request $request){
-        
-        Auth::user()->tokens()->delete();
-        $data = [
-            'Mensaje' => 'Cierre de sesión exitoso',
-            'Status' => 200
-        ];
-
-        return response()->json($data,200);
-
-    }
-        */
-
-    /**
-     * Logout user and revoke tokens — protected route.
-     */
+   
     public function logout(Request $request)
     {
         try {
