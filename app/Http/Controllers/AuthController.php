@@ -24,6 +24,7 @@ class AuthController extends Controller
         [
             'usuario' => 'required|unique:users,usuario',
             'contraseña'=> 'required',
+            'rol_usuario'=> 'required',
             'correo_asignado_cajero'=> 'required',
             'usuario_asignado_airpak'=> 'required',
             'contraseña_asignada_airpak'=> 'required',
@@ -46,6 +47,7 @@ class AuthController extends Controller
         $usuario = User::create([
             'usuario'=> $request->usuario,
             'contraseña' => Hash::make($request->contraseña),
+            'rol_usuario'=> $request->rol_usuario,
             'correo_asignado_cajero'=> $request->correo_asignado_cajero,
             'usuario_asignado_airpak'=> $request->usuario_asignado_airpak,
             'contraseña_asignada_airpak'=> $request->contraseña_asignada_airpak,

@@ -17,6 +17,7 @@ class UsersSeeder extends Seeder
         $user = new User();
         $user->usuario = "JerlingRoot";
         $user->contraseña = Hash::make("8246jerling");
+        $user->rol_usuario = "Administrador";
         $user->correo_asignado_cajero = "Ninguno";
         $user->usuario_asignado_airpak = "Ninguno";
         $user->contraseña_asignada_airpak = "Ninguno";

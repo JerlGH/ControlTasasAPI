@@ -24,6 +24,7 @@ class User extends Authenticatable
     protected $fillable = [
         'usuario',
         'contraseña',
+        'rol_usuario',
         'correo_asignado_cajero',
         'usuario_asignado_airpak',
         'contraseña_asignada_airpak',

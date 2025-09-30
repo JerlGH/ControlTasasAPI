@@ -50,8 +50,6 @@ class UserController extends Controller
         return response()->json($data, 200);
     }  
 
-    
-
     public function destroy($id){
         $usuario = User::find($id);
 
@@ -87,6 +85,7 @@ class UserController extends Controller
         [
             'usuario'=> 'required',
             'contraseña'=> 'required',
+            'rol_usuario'=> 'required',
             'correo_asignado_cajero'=> 'required',
             'usuario_asignado_airpak'=> 'required',
             'contraseña_asignada_airpak'=> 'required',
@@ -107,6 +106,7 @@ class UserController extends Controller
 
         $usuario->usuario = $request->usuario;
         $usuario->contraseña = $request->contraseña;
+        $usuario->rol_usuario = $request->rol_usuario;
         $usuario->correo_asignado_cajero = $request->correo_asignado_cajero;
         $usuario->usuario_asignado_airpak = $request->usuario_asignado_airpak;
         $usuario->contraseña_asignada_airpak = $request->contraseña_asignada_airpak;

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('usuario')->unique();
             $table->string('contraseña');
+            $table->string('rol_usuario');
             $table->string('correo_asignado_cajero');
             $table->string('usuario_asignado_airpak');
             $table->string('contraseña_asignada_airpak');
