@@ -183,9 +183,9 @@ class TrabajadorController extends Controller{
         $trabajador->id_subagencia = $request->id_subagencia;
         $trabajador->cargo = $request->cargo;
         $trabajador->salario_basico_inicial = $request->salario_basico_inicial;
-        $trabajador->salario_basico_actual = $request->estadotrasalario_basico_actualbajador;
+        $trabajador->salario_basico_actual = $request->salario_basico_actual;
         $trabajador->fecha_finalizacion = $request->fecha_finalizacion;
-        $trabajador->concepto_finalizacion = $request->caconcepto_finalizacionrgo;
+        $trabajador->concepto_finalizacion = $request->concepto_finalizacion;
         $trabajador->save();
 
         $data = [
