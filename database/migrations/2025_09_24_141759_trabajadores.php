@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             //Datos del empleado
             $table->string('nombre');
-            $table->string('cedula');
+            $table->string('cedula')->unique();
             $table->date('fecha_nacimiento');
-            $table->string('inss');
+            $table->string('inss')->unique();
             $table->string('nombre_banco');
-            $table->string('numero_cuenta_banco');
+            $table->string('numero_cuenta_banco')->unique();
             $table->string('estadotrabajador');
 
             //Datos de trabajo
