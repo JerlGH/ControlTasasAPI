@@ -78,7 +78,7 @@ class ClienteController extends Controller
             'id_usuario'=> 'required',
             'nombre'=> 'required',
             'cedula'=> 'required',
-            'fecha_nacimiento'=> 'required',
+            'telefono'=> 'required',
             'direccion'=> 'required',
             'estado_cliente'=> 'required'
         ]);
@@ -98,7 +98,7 @@ class ClienteController extends Controller
             'id_usuario'=> $request->id_usuario,
             'nombre'=> $request->nombre,
             'cedula'=> $request->cedula,
-            'fecha_nacimiento'=> $request->fecha_nacimiento,
+            'telefono'=> $request->telefono,
             'direccion'=> $request->direccion,
             'estado_cliente'=> $request->estado_cliente
         ]);
@@ -155,7 +155,7 @@ class ClienteController extends Controller
             'id_usuario'=> 'required',
             'nombre'=> 'required',
             'cedula'=> 'required',
-            'fecha_nacimiento'=> 'required',
+            'telefono'=> 'required',
             'direccion'=> 'required',
             'estado_cliente'=> 'required'
         ]);
@@ -174,7 +174,7 @@ class ClienteController extends Controller
         $cliente->id_usuario = $request->id_usuario;
         $cliente->nombre = $request->nombre;
         $cliente->cedula = $request->cedula;
-        $cliente->fecha_nacimiento = $request->fecha_nacimiento;
+        $cliente->telefono = $request->telefono;
         $cliente->direccion = $request->direccion;
         $cliente->estado_cliente = $request->estado_cliente;
         $cliente->save();
