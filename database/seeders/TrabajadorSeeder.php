@@ -25,8 +25,8 @@ class TrabajadorSeeder extends Seeder
         $trabajador->fecha_contratacion = "2025-1-1";
         $trabajador->id_subagencia = "1";
         $trabajador->cargo = "Administrador";
-        $trabajador->salario_basico_inicial = "4,000.00";
-        $trabajador->salario_basico_actual = "4,000.00";
+        $trabajador->salario_basico_inicial = 4000.00;
+        $trabajador->salario_basico_actual = 4500.00;
         $trabajador->fecha_finalizacion = "2025-1-1";
         $trabajador->concepto_finalizacion = "Ninguno";
         $trabajador->save();
