@@ -4,19 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Tasa_realizada;
+use App\Models\Mesa_cambio;
 use Illuminate\Support\Facades\Validator;
 
-class TasaRealizadasController extends Controller
+class MesasCambioController extends Controller
 {
     
     public function index(){
-        $tasas_realizadas = Tasa_realizada::all();
-        if($tasas_realizadas->isEmpty())
+        $mesas_cambio = Mesa_cambio::all();
+        if($mesas_cambio->isEmpty())
         {
             $data = 
             [
-                'Mensaje'=> 'No hay tasas de cambio registrados',
+                'Mensaje'=> 'No hay mesas de cambio registrados',
                 'Status' => 200 
             ];
             return response()->json($data, 200);
@@ -25,7 +25,7 @@ class TasaRealizadasController extends Controller
         {
             $data=
             [
-                'Tasas de cambio'=>$tasas_realizadas,
+                'Mesas de cambio'=>$mesas_cambio,
                 'Status' => 200
             ];
         }
@@ -33,18 +33,18 @@ class TasaRealizadasController extends Controller
     }
 
     public function indexid($id){
-        $tasas_realizadas = Tasa_realizada::find($id);
+        $mesa_cambio = Mesa_cambio::find($id);
 
-        if(!$tasas_realizadas){
+        if(!$mesa_cambio){
             $data =[
-                'Mensaje' => 'No se ha encontrado esta tasa de cambio',
+                'Mensaje' => 'No se ha encontrado esta mesa de cambio',
                 'Status' => 404
             ];
             return response()->json($data, 404);
         }
 
         $data=[
-            'Tasa de cambio'=>$tasas_realizadas,
+            'Mesa de cambio'=> $mesa_cambio,
             'Status' => 200
         ];
 
@@ -57,13 +57,13 @@ class TasaRealizadasController extends Controller
             'id_usuario'=> 'required',
             'id_cliente'=> 'required',
             'fecha'=> 'required',
-            'tipo_tasa'=> 'required',
+            'tipo_mesa'=> 'required',
             'precio'=> 'required',
             'monto_entrada'=> 'required',
             'monto_salida'=> 'required',
             'concepto'=> 'required',
             'archivo_adjunto'=> 'required',
-            'estado_tasa'=> 'required'
+            'estado_mesa'=> 'required'
         ]);
 
         if ($validator->fails())
@@ -77,29 +77,29 @@ class TasaRealizadasController extends Controller
             return response()->json($data,400);
         }
 
-        $tasas_realizadas = Tasa_realizada::create([
+        $mesa_cambio = Mesa_cambio::create([
             'id_usuario'=> $request->id_usuario,
             'id_cliente'=> $request->id_cliente,
             'fecha'=> $request->fecha,
-            'tipo_tasa'=> $request->tipo_tasa,
+            'tipo_mesa'=> $request->tipo_mesa,
             'precio'=> $request->precio,
             'monto_entrada'=> $request->monto_entrada,
             'monto_salida'=> $request->monto_salida,
             'concepto'=> $request->concepto,
             'archivo_adjunto'=> $request->archivo_adjunto,
-            'estado_tasa'=> $request->estado_tasa
+            'estado_mesa'=> $request->estado_mesa
         ]);
 
-        if (!$tasas_realizadas){
+        if (!$mesa_cambio){
             $data = [
-                'Mensaje' => 'Error al registrar esta tasa de cambio',
+                'Mensaje' => 'Error al registrar esta mesa de cambio',
                 'Status' => 500
             ];
             return response()->json($data,500);
         }
 
         $data =[
-            'Tasa de cambio'=> $tasas_realizadas,
+            'Mesa de cambio'=> $mesa_cambio,
             'Status' => 201
         ];
         
@@ -107,31 +107,31 @@ class TasaRealizadasController extends Controller
     }
 
     public function destroy($id){
-        $tasas_realizadas = Tasa_realizada::find($id);
+        $mesa_cambio = Mesa_cambio::find($id);
 
-        if(!$tasas_realizadas){
+        if(!$mesa_cambio){
             $data =[
-                'Mensaje' => 'No se ha encontrado este tasa de cambio',
+                'Mensaje' => 'No se ha encontrado esta mesa de cambio',
                 'Status' => 404
             ];
             return response()->json($data, 404);
         }
 
-        $tasas_realizadas -> delete();
+        $mesa_cambio->delete();
 
         $data =[
-                'Mensaje' => 'Se ha eliminado esta tasa de cambio',
+                'Mensaje' => 'Se ha eliminado esta mesa de cambio',
                 'Status' => 200
             ];
             return response()->json($data, 200);
     }
 
     public function update(Request $request, $id){
-        $tasas_realizadas = Tasa_realizada::find($id);
+        $mesa_cambio = Mesa_cambio::find($id);
 
-        if(!$tasas_realizadas){
+        if(!$mesa_cambio){
             $data =[
-                'Mensaje' => 'No se ha encontrado este trabajador',
+                'Mensaje' => 'No se ha encontrado esta mesa de cambio',
                 'Status' => 404
             ];
             return response()->json($data, 404);
@@ -142,13 +142,13 @@ class TasaRealizadasController extends Controller
             'id_usuario'=> 'required',
             'id_cliente'=> 'required',
             'fecha'=> 'required',
-            'tipo_tasa'=> 'required',
+            'tipo_mesa'=> 'required',
             'precio'=> 'required',
             'monto_entrada'=> 'required',
             'monto_salida'=> 'required',
             'concepto'=> 'required',
             'archivo_adjunto'=> 'required',
-            'estado_tasa'=> 'required'
+            'estado_mesa'=> 'required'
         ]);
 
         if ($validator->fails())
@@ -162,21 +162,21 @@ class TasaRealizadasController extends Controller
             return response()->json($data,400);
         }
 
-        $tasas_realizadas->id_usuario = $request->id_usuario;
-        $tasas_realizadas->id_cliente = $request->id_cliente;
-        $tasas_realizadas->fecha = $request->fecha;
-        $tasas_realizadas->tipo_tasa = $request->tipo_tasa;
-        $tasas_realizadas->precio = $request->precio;
-        $tasas_realizadas->monto_entrada = $request->monto_entrada;
-        $tasas_realizadas->monto_salida = $request->monto_salida;
-        $tasas_realizadas->concepto = $request->concepto;
-        $tasas_realizadas->archivo_adjunto = $request->archivo_adjunto;
-        $tasas_realizadas->estado_tasa = $request->estado_tasa;
-        $tasas_realizadas->save();
+        $mesa_cambio->id_usuario = $request->id_usuario;
+        $mesa_cambio->id_cliente = $request->id_cliente;
+        $mesa_cambio->fecha = $request->fecha;
+        $mesa_cambio->tipo_mesa = $request->tipo_mesa;
+        $mesa_cambio->precio = $request->precio;
+        $mesa_cambio->monto_entrada = $request->monto_entrada;
+        $mesa_cambio->monto_salida = $request->monto_salida;
+        $mesa_cambio->concepto = $request->concepto;
+        $mesa_cambio->archivo_adjunto = $request->archivo_adjunto;
+        $mesa_cambio->estado_mesa = $request->estado_mesa;
+        $mesa_cambio->save();
 
         $data = [
-            'Mensaje'=>'Se ha actualizado esta tasa de cambio correctamente',
-            'Tasa de cambio realizada' => $tasas_realizadas,
+            'Mensaje'=>'Se ha actualizado esta mesa de cambio correctamente',
+            'Mesa de cambio' => $mesa_cambio,
             'Status' => 200
         ];
 

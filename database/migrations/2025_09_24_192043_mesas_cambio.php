@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasas_realizadas', function (Blueprint $table) {
+        Schema::create('mesas_cambio', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_usuario');
             $table->foreign('id_usuario')->references('id')->on('users');
@@ -19,13 +19,13 @@ return new class extends Migration
             $table->foreign('id_cliente')->references('id')->on('clientes');
             //Datos de la tasa
             $table->date('fecha');
-            $table->string('tipo_tasa');
+            $table->string('tipo_mesa');
             $table->string('precio');
             $table->string('monto_entrada');
             $table->string('monto_salida');
             $table->string('concepto');
             $table->boolean('archivo_adjunto');
-            $table->string('estado_tasa');
+            $table->string('estado_mesa');
             $table->timestamps();
         });
     }
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasas_realizadas');
+        Schema::dropIfExists('mesas_cambio');
     }
 };

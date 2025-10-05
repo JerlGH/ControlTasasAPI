@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TrabajadorController;
 use App\Http\Controllers\Api\SubAgenciaController;
 use App\Http\Controllers\Api\ClienteController;
-use App\Http\Controllers\Api\TasaRealizadasController;
+use App\Http\Controllers\Api\MesasCambioController;
 use App\Http\Controllers\AuthController;
 
 
@@ -42,13 +42,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
    Route::post('/clientes', [ClienteController::class, 'store']);
    Route::put('/clientes/{id}', [ClienteController::class, 'update']);
    Route::delete('/clientes/{id}', [ClienteController::class, 'destroy']);
-   
-   //EndPoints para TasasRealizadas
-   Route::get('/tasasrealizadas', [TasaRealizadasController::class, 'index']);
-   Route::get('/tasasrealizadas/{id}', [TasaRealizadasController::class, 'indexid']);
-   Route::post('/tasasrealizadas', [TasaRealizadasController::class, 'store']);
-   Route::put('/tasasrealizadas/{id}', [TasaRealizadasController::class, 'update']);
-   Route::delete('/tasasrealizadas/{id}', [TasaRealizadasController::class, 'destroy']);
+   //EndPoints para Mesas de Cambio
+   Route::get('/mesasdecambio', [MesasCambioController::class, 'index']);
+   Route::get('/mesasdecambio/{id}', [MesasCambioController::class, 'indexid']);
+   Route::post('/mesasdecambio', [MesasCambioController::class, 'store']);
+   Route::put('/mesasdecambio/{id}', [MesasCambioController::class, 'update']);
+   Route::delete('/mesasdecambio/{id}', [MesasCambioController::class, 'destroy']);
 });
 
 

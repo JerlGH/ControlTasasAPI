@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Tasa_realizada extends Model
+class Mesa_cambio extends Model
 {
-    protected $table='tasas_realizadas';
+    protected $table='mesas_cambio';
     protected $fillable = [
         'id_usuario',
         'id_cliente',
         'fecha',
-        'tipo_tasa',
+        'tipo_mesa',
         'precio',
         'monto_entrada',
         'monto_salida',
         'concepto',
         'archivo_adjunto',
-        'estado_tasa',
+        'estado_mesa',
     ];
 
     public function usuarios(): BelongsTo   
