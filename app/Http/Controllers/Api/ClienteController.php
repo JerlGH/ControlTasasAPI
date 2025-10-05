@@ -51,6 +51,27 @@ class ClienteController extends Controller
         return response()->json($data, 200);
     }
 
+    public function indexcedula($cedula) {
+    $cliente = Cliente::where('cedula', $cedula)->first();
+
+    if (!$cliente) {
+        $data = [
+            'Mensaje' => 'No se ha encontrado este cliente',
+            'Status' => 404
+        ];
+        return response()->json($data, 404);
+    }
+
+    $data = [
+        'Cliente' => $cliente,
+        'Status' => 200
+    ];
+
+    return response()->json($data, 200);
+    }
+
+
+
     public function store(Request $request){
         $validator = validator::make($request->all(),
         [

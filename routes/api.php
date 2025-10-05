@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
    //EndPoints para Clientes
    Route::get('/clientes', [ClienteController::class, 'index']);
    Route::get('/clientes/{id}', [ClienteController::class, 'indexid']);
+   Route::get('/clientes/cedula/{cedula}', [ClienteController::class, 'indexcedula']);
    Route::post('/clientes', [ClienteController::class, 'store']);
    Route::put('/clientes/{id}', [ClienteController::class, 'update']);
    Route::delete('/clientes/{id}', [ClienteController::class, 'destroy']);

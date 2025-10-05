@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreign('id_usuario')->references('id')->on('users');
             //Datos del cliente
             $table->string('nombre');
-            $table->string('cedula');
-            $table->date('fecha_nacimiento');
+            $table->string('cedula')->unique();
+            $table->string('telefono');
             $table->string('direccion');
             $table->string('estado_cliente');
             $table->timestamps();
