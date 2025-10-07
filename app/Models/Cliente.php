@@ -15,7 +15,7 @@ class Cliente extends Model
         'id_usuario',
         'nombre',
         'cedula',
-        'fecha_nacimiento',
+        'telefono',
         'direccion',
         'estado_cliente',
     ];
@@ -25,9 +25,9 @@ class Cliente extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function tasas_realizadas(): HasMany
+    public function mesas_de_cambio(): HasMany
     {
-        return $this->hasMany(Tasa_realizada::class, 'id_cliente','id');
+        return $this->hasMany(Mesa_De_Cambio::class, 'id_cliente','id');
     }
 
 }

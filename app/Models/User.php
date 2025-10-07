@@ -66,9 +66,9 @@ class User extends Authenticatable
         return $this->hasMany(Cliente::class, 'id_usuario','id');
     }
 
-    public function tasas_realizadas(): HasMany
+    public function mesas_de_cambio(): HasMany
     {
-        return $this->hasMany(Tasa_realizada::class, 'id_usuario','id');
+        return $this->hasMany(Mesa_De_Cambio::class, 'id_usuario','id');
     }
     
 

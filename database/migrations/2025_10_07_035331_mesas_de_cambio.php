@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('id_usuario')->references('id')->on('users');
             $table->unsignedBigInteger('id_cliente');
             $table->foreign('id_cliente')->references('id')->on('clientes');
-            //Datos de la tasa
+            //Datos de la mesa de cambio
             $table->date('fecha');
             $table->string('tipo_mesa');
             $table->string('precio');
@@ -30,7 +30,7 @@ return new class extends Migration
         });
     }
 
-    /*
+    /**
      * Reverse the migrations.
      */
     public function down(): void

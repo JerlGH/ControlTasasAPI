@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Mesa_cambio;
+use App\Models\Mesa_De_Cambio;
 use Illuminate\Support\Facades\Validator;
 
-class MesasCambioController extends Controller
+class Mesa_de_CambioController extends Controller
 {
-    
     public function index(){
-        $mesas_cambio = Mesa_cambio::all();
-        if($mesas_cambio->isEmpty())
+        // Obtener todas las mesas de cambio
+        $mesas_de_cambio = Mesa_De_Cambio::all();
+        if($mesas_de_cambio->isEmpty())
         {
             $data = 
             [
@@ -25,17 +24,18 @@ class MesasCambioController extends Controller
         {
             $data=
             [
-                'Mesas de cambio'=>$mesas_cambio,
+                'Mesas de cambio'=>$mesas_de_cambio,
                 'Status' => 200
             ];
         }
         return response()->json($data, 200);
     }
 
-    public function indexid($id){
-        $mesa_cambio = Mesa_cambio::find($id);
+    public function show($id){
+        // Obtener una mesa de cambio por su ID
+        $mesa_de_cambio = Mesa_De_Cambio::find($id);
 
-        if(!$mesa_cambio){
+        if(!$mesa_de_cambio){
             $data =[
                 'Mensaje' => 'No se ha encontrado esta mesa de cambio',
                 'Status' => 404
@@ -44,7 +44,7 @@ class MesasCambioController extends Controller
         }
 
         $data=[
-            'Mesa de cambio'=> $mesa_cambio,
+            'Mesa de cambio'=> $mesa_de_cambio,
             'Status' => 200
         ];
 
@@ -52,6 +52,7 @@ class MesasCambioController extends Controller
     }
 
     public function store(Request $request){
+        // Crear una nueva mesa de cambio
         $validator = validator::make($request->all(),
         [
             'id_usuario'=> 'required',
@@ -77,7 +78,7 @@ class MesasCambioController extends Controller
             return response()->json($data,400);
         }
 
-        $mesa_cambio = Mesa_cambio::create([
+        $mesa_de_cambio = Mesa_De_Cambio::create([
             'id_usuario'=> $request->id_usuario,
             'id_cliente'=> $request->id_cliente,
             'fecha'=> $request->fecha,
@@ -90,7 +91,7 @@ class MesasCambioController extends Controller
             'estado_mesa'=> $request->estado_mesa
         ]);
 
-        if (!$mesa_cambio){
+        if (!$mesa_de_cambio){
             $data = [
                 'Mensaje' => 'Error al registrar esta mesa de cambio',
                 'Status' => 500
@@ -99,37 +100,19 @@ class MesasCambioController extends Controller
         }
 
         $data =[
-            'Mesa de cambio'=> $mesa_cambio,
+            'Mesa de cambio'=> $mesa_de_cambio,
             'Status' => 201
         ];
         
         return response()->json($data,201);
     }
 
-    public function destroy($id){
-        $mesa_cambio = Mesa_cambio::find($id);
+    public function update(Request $request, $id)
+    {
+        // Actualizar una mesa de cambio existente
+        $mesa_de_cambio = Mesa_de_Cambio::find($id);
 
-        if(!$mesa_cambio){
-            $data =[
-                'Mensaje' => 'No se ha encontrado esta mesa de cambio',
-                'Status' => 404
-            ];
-            return response()->json($data, 404);
-        }
-
-        $mesa_cambio->delete();
-
-        $data =[
-                'Mensaje' => 'Se ha eliminado esta mesa de cambio',
-                'Status' => 200
-            ];
-            return response()->json($data, 200);
-    }
-
-    public function update(Request $request, $id){
-        $mesa_cambio = Mesa_cambio::find($id);
-
-        if(!$mesa_cambio){
+        if(!$mesa_de_cambio){
             $data =[
                 'Mensaje' => 'No se ha encontrado esta mesa de cambio',
                 'Status' => 404
@@ -162,26 +145,46 @@ class MesasCambioController extends Controller
             return response()->json($data,400);
         }
 
-        $mesa_cambio->id_usuario = $request->id_usuario;
-        $mesa_cambio->id_cliente = $request->id_cliente;
-        $mesa_cambio->fecha = $request->fecha;
-        $mesa_cambio->tipo_mesa = $request->tipo_mesa;
-        $mesa_cambio->precio = $request->precio;
-        $mesa_cambio->monto_entrada = $request->monto_entrada;
-        $mesa_cambio->monto_salida = $request->monto_salida;
-        $mesa_cambio->concepto = $request->concepto;
-        $mesa_cambio->archivo_adjunto = $request->archivo_adjunto;
-        $mesa_cambio->estado_mesa = $request->estado_mesa;
-        $mesa_cambio->save();
+        $mesa_de_cambio->id_usuario = $request->id_usuario;
+        $mesa_de_cambio->id_cliente = $request->id_cliente;
+        $mesa_de_cambio->fecha = $request->fecha;
+        $mesa_de_cambio->tipo_mesa = $request->tipo_mesa;
+        $mesa_de_cambio->precio = $request->precio;
+        $mesa_de_cambio->monto_entrada = $request->monto_entrada;
+        $mesa_de_cambio->monto_salida = $request->monto_salida;
+        $mesa_de_cambio->concepto = $request->concepto;
+        $mesa_de_cambio->archivo_adjunto = $request->archivo_adjunto;
+        $mesa_de_cambio->estado_mesa = $request->estado_mesa;
+        $mesa_de_cambio->save();
 
         $data = [
             'Mensaje'=>'Se ha actualizado esta mesa de cambio correctamente',
-            'Mesa de cambio' => $mesa_cambio,
+            'Mesa de cambio' => $mesa_de_cambio,
             'Status' => 200
         ];
 
         return response()->json($data,200);
     }
 
+    public function destroy($id)
+    {
+        // Eliminar una mesa de cambio
+        $mesa_de_cambio = Mesa_de_Cambio::find($id);
 
+        if(!$mesa_de_cambio){
+            $data =[
+                'Mensaje' => 'No se ha encontrado esta mesa de cambio',
+                'Status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        $mesa_de_cambio->delete();
+
+        $data =[
+                'Mensaje' => 'Se ha eliminado esta mesa de cambio',
+                'Status' => 200
+            ];
+            return response()->json($data, 200);
+    }
 }

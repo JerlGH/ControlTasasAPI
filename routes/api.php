@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TrabajadorController;
 use App\Http\Controllers\Api\SubAgenciaController;
 use App\Http\Controllers\Api\ClienteController;
-use App\Http\Controllers\Api\MesasCambioController;
+use App\Http\Controllers\Mesa_de_CambioController;
 use App\Http\Controllers\AuthController;
 
 
@@ -43,11 +43,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
    Route::put('/clientes/{id}', [ClienteController::class, 'update']);
    Route::delete('/clientes/{id}', [ClienteController::class, 'destroy']);
    //EndPoints para Mesas de Cambio
-   Route::get('/mesasdecambio', [MesasCambioController::class, 'index']);
-   Route::get('/mesasdecambio/{id}', [MesasCambioController::class, 'indexid']);
-   Route::post('/mesasdecambio', [MesasCambioController::class, 'store']);
-   Route::put('/mesasdecambio/{id}', [MesasCambioController::class, 'update']);
-   Route::delete('/mesasdecambio/{id}', [MesasCambioController::class, 'destroy']);
+   Route::get('/mesasdecambio', [Mesa_de_CambioController::class, 'index']);
+   Route::get('/mesasdecambio/{id}', [Mesa_de_CambioController::class, 'indexid']);
+   Route::post('/mesasdecambio', [Mesa_de_CambioController::class, 'store']);
+   Route::put('/mesasdecambio/{id}', [Mesa_de_CambioController::class, 'update']);
+   Route::delete('/mesasdecambio/{id}', [Mesa_de_CambioController::class, 'destroy']);
 });
 
 

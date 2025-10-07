@@ -51,7 +51,8 @@ class ClienteController extends Controller
         return response()->json($data, 200);
     }
 
-    public function indexcedula($cedula) {
+    public function indexcedula($cedula) 
+    {
     $cliente = Cliente::where('cedula', $cedula)->first();
 
     if (!$cliente) {
@@ -70,7 +71,7 @@ class ClienteController extends Controller
     return response()->json($data, 200);
     }
 
-
+    
 
     public function store(Request $request){
         $validator = validator::make($request->all(),
@@ -102,6 +103,7 @@ class ClienteController extends Controller
             'direccion'=> $request->direccion,
             'estado_cliente'=> $request->estado_cliente
         ]);
+        
 
         if (!$cliente){
             $data = [
