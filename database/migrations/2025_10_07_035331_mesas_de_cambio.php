@@ -18,9 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_cliente');
             $table->foreign('id_cliente')->references('id')->on('clientes');
             //Datos de la mesa de cambio
-            $table->date('fecha');
-            $table->string('tipo_mesa');
-            $table->float('precio');
+            $table->dateTime('fecha');
+            $table->string('tipo_transaccion');
+            $table->float('tasa');
             $table->float('monto_entrada');
             $table->float('monto_salida');
             $table->string('concepto');

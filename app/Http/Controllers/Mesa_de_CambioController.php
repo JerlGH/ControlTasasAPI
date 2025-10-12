@@ -58,8 +58,8 @@ class Mesa_de_CambioController extends Controller
             'id_usuario'=> 'required',
             'id_cliente'=> 'required',
             'fecha'=> 'required',
-            'tipo_mesa'=> 'required',
-            'precio'=> 'required',
+            'tipo_transaccion'=> 'required',
+            'tasa'=> 'required',
             'monto_entrada'=> 'required',
             'monto_salida'=> 'required',
             'concepto'=> 'required',
@@ -82,8 +82,8 @@ class Mesa_de_CambioController extends Controller
             'id_usuario'=> $request->id_usuario,
             'id_cliente'=> $request->id_cliente,
             'fecha'=> $request->fecha,
-            'tipo_mesa'=> $request->tipo_mesa,
-            'precio'=> $request->precio,
+            'tipo_transaccion'=> $request->tipo_transaccion,
+            'tasa'=> $request->tasa,
             'monto_entrada'=> $request->monto_entrada,
             'monto_salida'=> $request->monto_salida,
             'concepto'=> $request->concepto,
@@ -125,8 +125,8 @@ class Mesa_de_CambioController extends Controller
             'id_usuario'=> 'required',
             'id_cliente'=> 'required',
             'fecha'=> 'required',
-            'tipo_mesa'=> 'required',
-            'precio'=> 'required',
+            'tipo_transaccion'=> 'required',
+            'tasa'=> 'required',
             'monto_entrada'=> 'required',
             'monto_salida'=> 'required',
             'concepto'=> 'required',
@@ -148,8 +148,8 @@ class Mesa_de_CambioController extends Controller
         $mesa_de_cambio->id_usuario = $request->id_usuario;
         $mesa_de_cambio->id_cliente = $request->id_cliente;
         $mesa_de_cambio->fecha = $request->fecha;
-        $mesa_de_cambio->tipo_mesa = $request->tipo_mesa;
-        $mesa_de_cambio->precio = $request->precio;
+        $mesa_de_cambio->tipo_transaccion = $request->tipo_transaccion;
+        $mesa_de_cambio->tasa = $request->tasa;
         $mesa_de_cambio->monto_entrada = $request->monto_entrada;
         $mesa_de_cambio->monto_salida = $request->monto_salida;
         $mesa_de_cambio->concepto = $request->concepto;
