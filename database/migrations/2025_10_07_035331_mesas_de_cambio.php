@@ -20,9 +20,9 @@ return new class extends Migration
             //Datos de la mesa de cambio
             $table->date('fecha');
             $table->string('tipo_mesa');
-            $table->string('precio');
-            $table->string('monto_entrada');
-            $table->string('monto_salida');
+            $table->float('precio');
+            $table->float('monto_entrada');
+            $table->float('monto_salida');
             $table->string('concepto');
             $table->boolean('archivo_adjunto');
             $table->string('estado_mesa');
