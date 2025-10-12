@@ -20,7 +20,6 @@ class UsersSeeder extends Seeder
         $user->rol_usuario = "Administrador";
         $user->correo_asignado_cajero = "Ninguno";
         $user->usuario_asignado_airpak = "Ninguno";
-        $user->contraseña_asignada_airpak = "Ninguno";
         $user->estado_usuario = "Activo";
         $user->id_trabajador = "1";
         $user->save();
