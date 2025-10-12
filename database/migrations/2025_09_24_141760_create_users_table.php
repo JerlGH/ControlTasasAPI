@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('rol_usuario');
             $table->string('correo_asignado_cajero');
             $table->string('usuario_asignado_airpak');
-            $table->string('contraseña_asignada_airpak');
             $table->string('estado_usuario');
             $table->unsignedBigInteger('id_trabajador');
             $table->foreign('id_trabajador')->references('id')->on('trabajadores');

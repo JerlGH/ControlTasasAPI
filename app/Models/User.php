@@ -27,7 +27,6 @@ class User extends Authenticatable
         'rol_usuario',
         'correo_asignado_cajero',
         'usuario_asignado_airpak',
-        'contraseña_asignada_airpak',
         'estado_usuario',
         'id_trabajador',
     ];

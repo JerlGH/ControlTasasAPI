@@ -84,11 +84,10 @@ class UserController extends Controller
         $validator = validator::make($request->all(),
         [
             'usuario'=> 'required',
-            'contraseña'=> 'required',
+            'contraseña',
             'rol_usuario'=> 'required',
             'correo_asignado_cajero'=> 'required',
             'usuario_asignado_airpak'=> 'required',
-            'contraseña_asignada_airpak'=> 'required',
             'estado_usuario'=> 'required',
             'id_trabajador'=> 'required'
         ]);
@@ -105,11 +104,12 @@ class UserController extends Controller
         }
 
         $usuario->usuario = $request->usuario;
-        $usuario->contraseña = $request->contraseña;
+        if ($request->filled('contraseña')) {
+          $usuario->contraseña = $request->contraseña;
+        }
         $usuario->rol_usuario = $request->rol_usuario;
         $usuario->correo_asignado_cajero = $request->correo_asignado_cajero;
         $usuario->usuario_asignado_airpak = $request->usuario_asignado_airpak;
-        $usuario->contraseña_asignada_airpak = $request->contraseña_asignada_airpak;
         $usuario->estado_usuario = $request->estado_usuario;
         $usuario->id_trabajador = $request->id_trabajador;
         $usuario->save();

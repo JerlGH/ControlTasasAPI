@@ -27,7 +27,6 @@ class AuthController extends Controller
             'rol_usuario'=> 'required',
             'correo_asignado_cajero'=> 'required',
             'usuario_asignado_airpak'=> 'required',
-            'contraseña_asignada_airpak'=> 'required',
             'estado_usuario'=> 'required',
             'id_trabajador'=> 'required'
         ]);
@@ -50,7 +49,6 @@ class AuthController extends Controller
             'rol_usuario'=> $request->rol_usuario,
             'correo_asignado_cajero'=> $request->correo_asignado_cajero,
             'usuario_asignado_airpak'=> $request->usuario_asignado_airpak,
-            'contraseña_asignada_airpak'=> $request->contraseña_asignada_airpak,
             'estado_usuario'=> $request->estado_usuario,
             'id_trabajador'=> $request->id_trabajador
         ]);
