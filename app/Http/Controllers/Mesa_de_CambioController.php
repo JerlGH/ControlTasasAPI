@@ -124,8 +124,8 @@ class Mesa_de_CambioController extends Controller
         [
             'id_usuario'=> 'required',
             'id_cliente'=> 'required',
-            'fecha'=> 'required',
-            'tipo_transaccion'=> 'required',
+            'fecha',
+            'tipo_transaccion',
             'tasa'=> 'required',
             'monto_entrada'=> 'required',
             'monto_salida'=> 'required',
@@ -147,8 +147,15 @@ class Mesa_de_CambioController extends Controller
 
         $mesa_de_cambio->id_usuario = $request->id_usuario;
         $mesa_de_cambio->id_cliente = $request->id_cliente;
-        $mesa_de_cambio->fecha = $request->fecha;
-        $mesa_de_cambio->tipo_transaccion = $request->tipo_transaccion;
+        if ($request->filled('fecha'))
+        {
+            $mesa_de_cambio->fecha = $request->fecha;
+        }
+        if ($request->filled('tipo_transaccion'))
+        {
+            $mesa_de_cambio->tipo_transaccion = $request->tipo_transaccion;
+        }
+
         $mesa_de_cambio->tasa = $request->tasa;
         $mesa_de_cambio->monto_entrada = $request->monto_entrada;
         $mesa_de_cambio->monto_salida = $request->monto_salida;
