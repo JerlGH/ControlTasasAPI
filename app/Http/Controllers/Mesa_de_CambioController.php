@@ -194,4 +194,80 @@ class Mesa_de_CambioController extends Controller
             ];
             return response()->json($data, 200);
     }
+
+
+    public function showfiltred(Request $request){
+        // Obtener mesas de cambio filtradas por estado
+        $validator = Validator::make($request->all(), [
+        // fecha exacta (YYYY-MM-DD) -> whereDate
+        'fecha_desde'  => 'nullable|date',
+        'fecha_hasta'  => 'nullable|date',
+        'tipo_transaccion' => 'nullable|string',
+        'estado_mesa' => 'nullable|string',
+        'id_usuario' => 'nullable|integer',
+        // Añadimos filtros por año y mes
+        'anio' => 'nullable|integer|min:1900|max:2100',
+        'mes'  => 'nullable|integer|between:1,12',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'Mensaje' => 'Error en la validación de datos',
+            'Errores' => $validator->errors(),
+            'Status'  => 422
+        ], 422);
+    }
+
+        // Construir consulta dinámica
+    $query = Mesa_De_Cambio::query();
+
+    if ($request->filled('fecha_desde')) {
+        $query->whereDate('fecha', '>=', $request->input('fecha_desde'));
+    }
+    if ($request->filled('fecha_hasta')) {
+        $query->whereDate('fecha', '<=', $request->input('fecha_hasta'));
+    }
+    if ($request->filled('id_usuario')) {
+        $query->where('id_usuario', $request->input('id_usuario'));
+    }
+    if ($request->filled('tipo_transaccion')) {
+        $query->where('tipo_transaccion', $request->input('tipo_transaccion'));
+    }
+    if ($request->filled('estado_mesa')) {
+        $query->where('estado_mesa', $request->input('estado_mesa'));
+    }
+    if ($request->filled('año')) {
+        $query->whereYear('fecha', $request->input('año'));
+    }
+    if ($request->filled('mes')) {
+        $query->whereMonth('fecha', $request->input('mes'));
+    }
+    
+
+    // Opcional: orden y paginación
+    $query->orderBy('fecha', 'desc');
+    $mesas_de_cambio = $query->get();
+
+    if ($mesas_de_cambio->isEmpty()) {
+        return response()->json([
+            'Mensaje' => 'No se han encontrado mesas de cambio con los filtros proporcionados',
+            'Status'  => 404
+        ], 404);
+    }
+
+    return response()->json([
+        'Mesas de cambio' => $mesas_de_cambio,
+        'Status' => 200
+    ], 200);
+}
+
+
+
+
+
+
+
+
+
+
 }
