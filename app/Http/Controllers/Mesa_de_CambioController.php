@@ -206,7 +206,7 @@ class Mesa_de_CambioController extends Controller
         'estado_mesa' => 'nullable|string',
         'id_usuario' => 'nullable|integer',
         // Añadimos filtros por año y mes
-        'anio' => 'nullable|integer|min:1900|max:2100',
+        'año' => 'nullable|integer|min:1900|max:2100',
         'mes'  => 'nullable|integer|between:1,12',
     ]);
 
