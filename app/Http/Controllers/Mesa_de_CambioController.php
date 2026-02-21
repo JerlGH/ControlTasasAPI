@@ -205,8 +205,8 @@ class Mesa_de_CambioController extends Controller
         'tipo_transaccion' => 'nullable|string',
         'estado_mesa' => 'nullable|string',
         'id_usuario' => 'nullable|integer',
-        // Añadimos filtros por año y mes
-        'año' => 'nullable|integer|min:1900|max:2100',
+        // Filtros por año y mes
+        'anio' => 'nullable|integer|min:1900|max:2100',
         'mes'  => 'nullable|integer|between:1,12',
     ]);
 
@@ -236,8 +236,8 @@ class Mesa_de_CambioController extends Controller
     if ($request->filled('estado_mesa')) {
         $query->where('estado_mesa', $request->input('estado_mesa'));
     }
-    if ($request->filled('año')) {
-        $query->whereYear('fecha', $request->input('año'));
+    if ($request->filled('anio')) {
+        $query->whereYear('fecha', $request->input('anio'));
     }
     if ($request->filled('mes')) {
         $query->whereMonth('fecha', $request->input('mes'));
