@@ -56,7 +56,7 @@ class User extends Authenticatable
 
     public function trabajadores(): BelongsTo
     {
-        return $this->belongsTo(Trabajador::class,);
+        return $this->belongsTo(Trabajador::class, 'id_trabajador','id');
     }
     
 
@@ -69,6 +69,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Mesa_De_Cambio::class, 'id_usuario','id');
     }
-    
 
+    public function arqueos(): HasMany
+    {
+        return $this->hasMany(Arqueo::class, 'id_usuario','id');
+    }
+
+    public function pases(): HasMany
+    {
+        return $this->hasMany(Pases::class, 'id_usuario','id');
+    }
+    
+    public function precio_proveedor_dolar(): HasMany
+    {
+        return $this->hasMany(Precio_Proveedor_Dolar::class, 'id_usuario','id');
+    }
 }

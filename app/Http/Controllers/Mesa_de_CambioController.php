@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 use App\Models\Mesa_De_Cambio;
 use Illuminate\Support\Facades\Validator;
@@ -107,8 +108,7 @@ class Mesa_de_CambioController extends Controller
         return response()->json($data,201);
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         // Actualizar una mesa de cambio existente
         $mesa_de_cambio = Mesa_de_Cambio::find($id);
 
@@ -173,8 +173,7 @@ class Mesa_de_CambioController extends Controller
         return response()->json($data,200);
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id){
         // Eliminar una mesa de cambio
         $mesa_de_cambio = Mesa_de_Cambio::find($id);
 
@@ -197,17 +196,18 @@ class Mesa_de_CambioController extends Controller
 
 
     public function showfiltred(Request $request){
-        // Obtener mesas de cambio filtradas por estado
+        // Obtener mesas de cambio filtradas por fecha, tipo de transacción, estado de la mesa o usuario
         $validator = Validator::make($request->all(), [
-        // fecha exacta (YYYY-MM-DD) -> whereDate
+        //Filtros
+        // formato de fecha exacta (YYYY-MM-DD) -> whereDate
         'fecha_desde'  => 'nullable|date',
         'fecha_hasta'  => 'nullable|date',
         'tipo_transaccion' => 'nullable|string',
         'estado_mesa' => 'nullable|string',
         'id_usuario' => 'nullable|integer',
-        // Filtros por año y mes
         'anio' => 'nullable|integer|min:1900|max:2100',
         'mes'  => 'nullable|integer|between:1,12',
+        'id_cliente' => 'nullable|integer'
     ]);
 
     if ($validator->fails()) {
@@ -218,7 +218,7 @@ class Mesa_de_CambioController extends Controller
         ], 422);
     }
 
-        // Construir consulta dinámica
+        // Consulta dinámica
     $query = Mesa_De_Cambio::query();
 
     if ($request->filled('fecha_desde')) {
@@ -242,19 +242,21 @@ class Mesa_de_CambioController extends Controller
     if ($request->filled('mes')) {
         $query->whereMonth('fecha', $request->input('mes'));
     }
-    
-
-    // Opcional: orden y paginación
+    if ($request->filled('id_cliente')) {
+        $query->where('id_cliente', $request->input('id_cliente'));
+    }
+    // Ordenar por fecha de forma descendente
     $query->orderBy('fecha', 'desc');
     $mesas_de_cambio = $query->get();
 
+    // Verificar si se encontraron mesas de cambio con los filtros aplicados
     if ($mesas_de_cambio->isEmpty()) {
         return response()->json([
             'Mensaje' => 'No se han encontrado mesas de cambio con los filtros proporcionados',
             'Status'  => 404
         ], 404);
     }
-
+    // Retornar las mesas de cambio filtradas y ordenadas por fecha descendente
     return response()->json([
         'Mesas de cambio' => $mesas_de_cambio,
         'Status' => 200
@@ -262,7 +264,78 @@ class Mesa_de_CambioController extends Controller
 }
 
 
+public function showmesasconusuarios(Request $request){
+        // Obtener mesas de cambio filtradas por fecha, tipo de transacción, estado de la mesa o usuario
+        $validator = Validator::make($request->all(), [
+        // fecha exacta (YYYY-MM-DD) -> whereDate
+        'fecha_desde'  => 'nullable|date',
+        'fecha_hasta'  => 'nullable|date',
+        'tipo_transaccion' => 'nullable|string',
+        'estado_mesa' => 'nullable|string',
+        'id_usuario' => 'nullable|integer',
+        
+        // Filtros por año y mes
+        'anio' => 'nullable|integer|min:1900|max:2100',
+        'mes'  => 'nullable|integer|between:1,12',
+    ]);
 
+    if ($validator->fails()) {
+        return response()->json([
+            'Mensaje' => 'Error en la validación de datos',
+            'Errores' => $validator->errors(),
+            'Status'  => 422
+        ], 422);
+    }
+
+        // Consulta dinámica
+    $query = Mesa_De_Cambio::query();
+
+    if ($request->filled('fecha_desde')) {
+        $query->whereDate('fecha', '>=', $request->input('fecha_desde'));
+    }
+    if ($request->filled('fecha_hasta')) {
+        $query->whereDate('fecha', '<=', $request->input('fecha_hasta'));
+    }
+    if ($request->filled('id_usuario')) {
+        $query->where('id_usuario', $request->input('id_usuario'));
+    }
+    if ($request->filled('tipo_transaccion')) {
+        $query->where('tipo_transaccion', $request->input('tipo_transaccion'));
+    }
+    if ($request->filled('estado_mesa')) {
+        $query->where('estado_mesa', $request->input('estado_mesa'));
+    }
+    if ($request->filled('anio')) {
+        $query->whereYear('fecha', $request->input('anio'));
+    }
+    if ($request->filled('mes')) {
+        $query->whereMonth('fecha', $request->input('mes'));
+    }
+    // Ordenar por fecha de forma descendente
+    $query->orderBy('fecha', 'desc');
+    $mesas_de_cambio = $query->get();
+
+    // Verificar si se encontraron mesas de cambio con los filtros aplicados
+    if ($mesas_de_cambio->isEmpty()) {
+        return response()->json([
+            'Mensaje' => 'No se han encontrado mesas de cambio con los filtros proporcionados',
+            'Status'  => 404
+        ], 404);
+    }
+    // Obtener los IDs de los clientes asociados a las mesas de cambio filtradas
+    $ids_clientes = $mesas_de_cambio->pluck('id_cliente')->unique();
+    // Obtener los clientes correspondientes a esos IDs
+
+    $clientes = Cliente::whereIn('id', $ids_clientes)->get();
+
+
+    // Retornar las mesas de cambio filtradas y ordenadas por fecha descendente
+    return response()->json([
+        'Mesas' => $mesas_de_cambio,
+        'Clientes' => $clientes,
+        'Status' => 200
+    ], 200);
+}
 
 
 

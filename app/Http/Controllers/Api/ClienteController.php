@@ -51,6 +51,45 @@ class ClienteController extends Controller
         return response()->json($data, 200);
     }
 
+    public function indexultimos100xusuario($idusuario){
+
+        $clientes = Cliente::where('id_usuario', $idusuario)->latest()->take(100)->get();
+
+        if($clientes->isEmpty()){
+            $data = [
+                'Mensaje' => 'No se han encontrado clientes para este usuario',
+                'Status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        $data = [
+            'Clientes' => $clientes,
+            'Status' => 200
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    public function indexByUsuario($id_usuario){
+    $clientes = Cliente::where('id_usuario', $id_usuario)->get();
+
+    if ($clientes->isEmpty()) {
+        $data = [
+            'Mensaje' => 'No se han encontrado clientes para este usuario',
+            'Status'  => 404
+        ];
+        return response()->json($data, 404);
+    }
+
+    $data = [
+        'Clientes' => $clientes,
+        'Status'   => 200
+    ];
+
+    return response()->json($data, 200);
+}
+
     public function indexcedula($cedula) 
     {
     $cliente = Cliente::where('cedula', $cedula)->first();

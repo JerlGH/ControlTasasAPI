@@ -5,6 +5,11 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TrabajadorController;
 use App\Http\Controllers\Api\SubAgenciaController;
 use App\Http\Controllers\Api\ClienteController;
+use App\Http\Controllers\Api\ArqueoController;
+use App\Http\Controllers\Api\PasesController;
+use App\Http\Controllers\Api\ChequesController;
+use App\Http\Controllers\Api\EntradasYSalidasController;
+use App\Http\Controllers\Api\PrecioProveedorDolarController;
 use App\Http\Controllers\Mesa_de_CambioController;
 use App\Http\Controllers\AuthController;
 
@@ -15,12 +20,14 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware(['auth:sanctum'])->group(function () {
    //EndPoint para Cerrar Sesión
    Route::post('/logout', [AuthController::class, 'logout']);
+
    //EndPoints para Usuarios
    Route::get('/usuarios', [UserController::class, 'index']);
    Route::get('/usuarios/{id}', [UserController::class, 'indexid']);
    Route::post('/usuarios', [AuthController::class, 'store']);
    Route::put('/usuarios/{id}', [UserController::class, 'update']);
    Route::delete('/usuarios/{id}', [UserController::class, 'destroy']);
+
    //EndPoints para Trabajadores
    Route::get('/trabajadores', [TrabajadorController::class, 'index']);
    Route::get('/trabajadores/{id}', [TrabajadorController::class, 'indexid']);
@@ -38,16 +45,56 @@ Route::middleware(['auth:sanctum'])->group(function () {
    //EndPoints para Clientes
    Route::get('/clientes', [ClienteController::class, 'index']);
    Route::get('/clientes/{id}', [ClienteController::class, 'indexid']);
+   Route::get('/clientes/usuario/{id_usuario}', [ClienteController::class, 'indexByUsuario']);
+   Route::get('/clientes/ultimos100/{id}', [ClienteController::class, 'indexultimos100xusuario']);
    Route::get('/clientes/cedula/{cedula}', [ClienteController::class, 'indexcedula']);
    Route::post('/clientes', [ClienteController::class, 'store']);
    Route::put('/clientes/{id}', [ClienteController::class, 'update']);
    Route::delete('/clientes/{id}', [ClienteController::class, 'destroy']);
+
    //EndPoints para Mesas de Cambio
    Route::get('/mesasdecambio', [Mesa_de_CambioController::class, 'index']);
+   Route::post('/mesasdecambiofiltred', [Mesa_de_CambioController::class, 'showfiltred']);
+   Route::post('/mesasconusuarios', [Mesa_de_CambioController::class, 'showmesasconusuarios']);
    Route::get('/mesasdecambio/{id}', [Mesa_de_CambioController::class, 'indexid']);
    Route::post('/mesasdecambio', [Mesa_de_CambioController::class, 'store']);
    Route::put('/mesasdecambio/{id}', [Mesa_de_CambioController::class, 'update']);
    Route::delete('/mesasdecambio/{id}', [Mesa_de_CambioController::class, 'destroy']);
+
+   //EndPoints para Arqueos
+   Route::get('/arqueos', [ArqueoController::class, 'index']);
+   Route::get('/arqueos/{id}', [ArqueoController::class, 'indexid']);
+   Route::post('/arqueos', [ArqueoController::class, 'store']);
+   Route::put('/arqueos/{id}', [ArqueoController::class, 'update']);
+   Route::delete('/arqueos/{id}', [ArqueoController::class, 'destroy']);
+
+   //EndPoints para Pases
+   Route::get('/pases', [PasesController::class, 'index']);
+   Route::get('/pases/{id}', [PasesController::class, 'indexid']);
+   Route::post('/pases', [PasesController::class, 'store']);
+   Route::put('/pases/{id}', [PasesController::class, 'update']);
+   Route::delete('/pases/{id}', [PasesController::class, 'destroy']);
+
+   //EndPoints para Cheques
+   Route::get('/cheques', [ChequesController::class, 'index']);
+   Route::get('/cheques/{id}', [ChequesController::class, 'indexid']);
+   Route::post('/cheques', [ChequesController::class, 'store']);
+   Route::put('/cheques/{id}', [ChequesController::class, 'update']);
+   Route::delete('/cheques/{id}', [ChequesController::class, 'destroy']);
+
+   //EndPoints para Entradas y Salidas
+   Route::get('/entradasysalidas', [EntradasYSalidasController::class, 'index']);
+   Route::get('/entradasysalidas/{id}', [EntradasYSalidasController::class, 'indexid']);
+   Route::post('/entradasysalidas', [EntradasYSalidasController::class, 'store']);
+   Route::put('/entradasysalidas/{id}', [EntradasYSalidasController::class, 'update']);
+   Route::delete('/entradasysalidas/{id}', [EntradasYSalidasController::class, 'destroy']);
+
+   //EndPoints para Precios de proveedor del dólar
+   Route::get('/precioproveedordolar', [PrecioProveedorDolarController::class, 'index']);
+   Route::get('/precioproveedordolar/{id}', [PrecioProveedorDolarController::class, 'indexid']);
+   Route::post('/precioproveedordolar', [PrecioProveedorDolarController::class, 'store']);
+   Route::put('/precioproveedordolar/{id}', [PrecioProveedorDolarController::class, 'update']);
+   Route::delete('/precioproveedordolar/{id}', [PrecioProveedorDolarController::class, 'destroy']);
 });
 
 

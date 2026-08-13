@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Mesa_De_Cambio extends Model
 {
@@ -11,6 +12,7 @@ class Mesa_De_Cambio extends Model
     protected $fillable = [
         'id_usuario',
         'id_cliente',
+        'id_subagencia',
         'fecha',
         'tipo_transaccion',
         'tasa',
@@ -30,5 +32,10 @@ class Mesa_De_Cambio extends Model
     public function clientes(): BelongsTo
     {
         return $this->belongsTo(Cliente::class,'id_cliente','id');
+    }
+    
+    public function subagencia(): BelongsTo
+    {
+        return $this->belongsTo(SubAgencia::class, 'id_subagencia', 'id');
     }
 }
