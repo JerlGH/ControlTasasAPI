@@ -6,30 +6,33 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('pases', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_arqueo');
-            $table->foreign('id_arqueo')->references('id')->on('arqueo');
-            $table->unsignedBigInteger('id_usuario');
-            $table->foreign('id_usuario')->references('id')->on('users');
-            
-            $table->string('estado');
-            $table->string('tipo');
-            $table->string('moneda');
-            $table->float('monto');
-
+            // Cada fila conserva el movimiento declarado por una caja.
+            $table->foreignId('id_arqueo')->constrained('arqueo')->restrictOnDelete();
+            $table->foreignId('id_usuario')->constrained('users')->restrictOnDelete();
+            $table->foreignId('id_caja_contraparte')->nullable()
+                ->constrained('cajas')->restrictOnDelete();
+            $table->foreignId('id_pase_relacionado')->nullable()->unique()
+                ->constrained('pases');
+            $table->string('estado', 30)->default('registrado');
+            $table->enum('tipo', ['Entrada', 'Salida']);
+            $table->enum('moneda', ['NIO', 'USD']);
+            $table->decimal('monto', 18, 2);
+            $table->enum('medio', ['efectivo', 'cheque', 'transferencia', 'mixto'])->nullable();
+            $table->string('detalle')->nullable()->comment('Nombre declarado de la otra caja, por ejemplo Caja2');
+            $table->string('referencia', 100)->nullable();
+            $table->dateTime('fecha_operacion')->nullable();
+            $table->text('observacion')->nullable();
             $table->timestamps();
+
+            $table->index(['id_arqueo', 'tipo', 'moneda']);
+            $table->index('referencia');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('pases');

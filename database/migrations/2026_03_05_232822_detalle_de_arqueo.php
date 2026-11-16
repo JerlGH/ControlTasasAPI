@@ -6,37 +6,33 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('detalle_arqueo', function (Blueprint $table) {
             $table->id();
-            //Relación con el arqueo al que pertenece el detalle
-            $table->unsignedBigInteger('id_arqueo');
-            $table->foreign('id_arqueo')->references('id')->on('arqueo');
-            //Datos del detalle del arqueo
-            $table->string('estado');
-            $table->string('moneda');
-            $table->float('total');
-            $table->integer('mil');
-            $table->integer('quinientos');
-            $table->integer('doscientos');
-            $table->integer('cien');
-            $table->integer('cincuenta');
-            $table->integer('veinte');
-            $table->integer('diez');
-            $table->integer('cinco');
-            $table->integer('dos');
-            $table->integer('uno');
+            $table->foreignId('id_arqueo')->constrained('arqueo')->restrictOnDelete();
+            $table->string('estado', 30)->default('borrador');
+            $table->enum('moneda', ['NIO', 'USD']);
+            // Solo efectivo por denominaciones. Los cheques se cuentan en arqueo_cheques.
+            $table->decimal('total', 18, 2)->nullable();
+            $table->unsignedInteger('mil')->default(0);
+            $table->unsignedInteger('quinientos')->default(0);
+            $table->unsignedInteger('doscientos')->default(0);
+            $table->unsignedInteger('cien')->default(0);
+            $table->unsignedInteger('cincuenta')->default(0);
+            $table->unsignedInteger('veinte')->default(0);
+            $table->unsignedInteger('diez')->default(0);
+            $table->unsignedInteger('cinco')->default(0);
+            $table->unsignedInteger('dos')->default(0);
+            $table->unsignedInteger('uno')->default(0);
+            $table->dateTime('contado_at')->nullable();
+            $table->text('observacion')->nullable();
             $table->timestamps();
+
+            $table->unique(['id_arqueo', 'moneda']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('detalle_arqueo');

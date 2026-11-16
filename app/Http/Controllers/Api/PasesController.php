@@ -2,135 +2,57 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Models\Pases;
+use App\Models\Arqueo;
+use App\Support\Caja\Access;
+use App\Support\Caja\Decimal;
+use App\Support\Caja\References;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
-class PasesController extends Controller
+class PasesController extends RegistroCajaController
 {
-    public function index()
+    protected string $model = Pases::class;
+    protected string $label = 'Pase';
+    protected string $plural = 'Pases';
+
+    protected function rules(?Model $record): array
     {
-        $pases = Pases::all();
-
-        if ($pases->isEmpty()) {
-            return response()->json([
-                'Mensaje' => 'No hay pases registrados',
-                'Status' => 200,
-            ], 200);
-        }
-
-        return response()->json([
-            'Pases' => $pases,
-            'Status' => 200,
-        ], 200);
+        $required = $record ? 'sometimes' : 'required';
+        return array_replace($this->common($record), ['tipo' => [$required, 'in:Entrada,Salida'],
+            'moneda' => [$required, 'in:NIO,USD'], 'monto' => $this->amount($required, 2, false, true),
+            'id_usuario' => ['sometimes', 'integer'], 'id_caja_contraparte' => ['nullable', 'integer', 'exists:cajas,id'],
+            'id_pase_relacionado' => ['nullable', 'integer', 'exists:pases,id'], 'detalle' => ['nullable', 'string', 'max:255'],
+            'medio' => ['nullable', 'in:efectivo,cheque,transferencia,mixto'],
+            'referencia' => ['nullable', 'string', 'max:100'], 'fecha_operacion' => ['nullable', 'date']]);
     }
 
-    public function indexid($id)
+    protected function prepare(Request $request, array $values, ?Model $record, ?Arqueo $day): array
     {
-        $pase = Pases::find($id);
-
-        if (!$pase) {
-            return response()->json([
-                'Mensaje' => 'No se ha encontrado este pase',
-                'Status' => 404,
-            ], 404);
+        if (! empty($values['id_caja_contraparte'])) {
+            $box = \App\Models\Caja::findOrFail($values['id_caja_contraparte']);
+            Access::check($box->id_subagencia === $day->id_subagencia && $box->id !== $day->id_caja,
+                'id_caja_contraparte', 'El pase requiere otra caja de la misma agencia');
+        }
+        References::pair($request, $values, $record, $day, Pases::class, 'id_pase_relacionado');
+        if (($values['estado'] ?? null) === 'anulado') {
+            Access::check(empty($values['id_pase_relacionado'])
+                && (! $record || ! Pases::where('id_pase_relacionado', $record->id)->exists()),
+                'estado', 'Desvincule primero la contraparte con supervision');
         }
 
-        return response()->json([
-            'Pase' => $pase,
-            'Status' => 200,
-        ], 200);
+        return $values;
     }
 
-    public function store(Request $request)
+    public function ultimosPorUsuario(Request $request, int $id_usuario): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'id_arqueo' => 'required|integer|exists:arqueo,id',
-            'id_usuario' => 'required|integer|exists:users,id',
-            'estado' => 'required|string',
-            'tipo' => 'required|string',
-            'moneda' => 'required|string',
-            'monto' => 'required|numeric',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'Mensaje' => 'Error en la validación de datos',
-                'Errores' => $validator->errors(),
-                'Status' => 400,
-            ], 400);
+        if (! Access::admin($request) && $id_usuario !== Access::user($request)->id) {
+            throw new \Symfony\Component\HttpKernel\Exception\HttpException(403, 'Usuario fuera del alcance permitido');
         }
+        $request->query->set('id_usuario', (string) $id_usuario);
 
-        $pase = Pases::create($request->all());
-
-        if (!$pase) {
-            return response()->json([
-                'Mensaje' => 'Error al registrar el pase',
-                'Status' => 500,
-            ], 500);
-        }
-
-        return response()->json([
-            'Pase' => $pase,
-            'Status' => 201,
-        ], 201);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $pase = Pases::find($id);
-
-        if (!$pase) {
-            return response()->json([
-                'Mensaje' => 'No se ha encontrado este pase',
-                'Status' => 404,
-            ], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'id_arqueo' => 'required|integer|exists:arqueo,id',
-            'id_usuario' => 'required|integer|exists:users,id',
-            'estado' => 'required|string',
-            'tipo' => 'required|string',
-            'moneda' => 'required|string',
-            'monto' => 'required|numeric',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'Mensaje' => 'Error en la validación de datos',
-                'Errores' => $validator->errors(),
-                'Status' => 400,
-            ], 400);
-        }
-
-        $pase->fill($request->all());
-        $pase->save();
-
-        return response()->json([
-            'Mensaje' => 'Se ha actualizado este pase correctamente',
-            'Pase' => $pase,
-            'Status' => 200,
-        ], 200);
-    }
-
-    public function destroy($id)
-    {
-        $pase = Pases::find($id);
-
-        if (!$pase) {
-            return response()->json([
-                'Mensaje' => 'No se ha encontrado este pase',
-                'Status' => 404,
-            ], 404);
-        }
-
-        $pase->delete();
-
-        return response()->json([
-            'Mensaje' => 'Se ha eliminado el pase',
-            'Status' => 200,
-        ], 200);
+        return $this->index($request);
     }
 }
