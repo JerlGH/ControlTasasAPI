@@ -173,6 +173,9 @@ class ArqueoController extends RegistroCajaController
         return $this->transaction(function () use ($request, $id) {
             $day = Access::day($request, $id, true);
             Access::check($day->estado === 'abierto', 'estado', 'Solo puede anularse una jornada abierta');
+            Access::check(! \App\Models\SolicitudPase::whereIn('estado', ['pendiente', 'aceptado'])->where(fn ($q) =>
+                $q->where('id_arqueo_origen', $day->id)->orWhere('id_arqueo_destino', $day->id))->exists(),
+                'estado', 'No puede anular una jornada con pases pendientes o aceptados');
             $before = $day->getAttributes();
             $day->update(['estado' => 'anulado']);
             Audit::record($request, $day, 'anular', $before, $day->id);

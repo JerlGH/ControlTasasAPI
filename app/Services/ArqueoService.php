@@ -104,6 +104,10 @@ final class ArqueoService
     public function summary(Arqueo $day, bool $strict = false): array
     {
         $pending = [];
+        if (\App\Models\SolicitudPase::where('estado', 'pendiente')->where(fn ($q) =>
+            $q->where('id_arqueo_origen', $day->id)->orWhere('id_arqueo_destino', $day->id))->exists()) {
+            $pending[] = 'pases_por_resolver';
+        }
         foreach (self::TOTALES as $field) {
             if ($day->$field === null) {
                 $pending[] = $field;

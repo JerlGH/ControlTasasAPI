@@ -187,7 +187,7 @@ foreach ([['Compra', 1, '36.5', ['100.2', '50', '350', '148.61', '90.89', '0.85'
     ['Compra', 2, '36.65', ['1000', '6750', '450']], ['Compra', 3, '36.63', ['1740']],
     ['Venta', 1, '37', ['870', '8', '855']]] as [$type, $number, $rate, $amounts]) {
     $rateId = api('POST', 'tasascambioarqueo', ['id_arqueo' => $day, 'tipo' => $type,
-        'numero_precio' => $number, 'tasa' => $rate], $cashier, 201)['Tasa']['id'];
+        'numero_precio' => $number, 'tasa' => $rate], $admin, 201)['Tasa']['id'];
     foreach ($amounts as $amount) {
         $data = ['id_arqueo' => $day, 'tipo' => $type, 'id_tasa_arqueo' => $rateId, 'monto_dolares' => $amount, 'tasa' => $rate];
         if ($amount === '5.83') {
@@ -200,7 +200,7 @@ foreach ([['Compra', 1, '36.5', ['100.2', '50', '350', '148.61', '90.89', '0.85'
         }
     }
 }
-api('POST', 'tasascambioarqueo', ['id_arqueo' => $day, 'tipo' => 'Compra', 'numero_precio' => 5, 'tasa' => 36], $cashier, 422);
+api('POST', 'tasascambioarqueo', ['id_arqueo' => $day, 'tipo' => 'Compra', 'numero_precio' => 5, 'tasa' => 36], $admin, 422);
 $selectedRate = $db->table('tasas_cambio_arqueo')->where('id_arqueo', $day)->where('tipo', 'Compra')->first()->id;
 api('POST', 'operacionescambiocaja', ['id_arqueo' => $day, 'id_tasa_arqueo' => $selectedRate,
     'tipo' => 'Compra', 'monto_dolares' => '1', 'tasa' => '1'], $cashier, 422);

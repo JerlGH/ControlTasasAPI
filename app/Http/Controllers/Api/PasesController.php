@@ -31,6 +31,10 @@ class PasesController extends RegistroCajaController
 
     protected function prepare(Request $request, array $values, ?Model $record, ?Arqueo $day): array
     {
+        $ids = array_filter([$record?->id, $values['id_pase_relacionado'] ?? null]);
+        Access::check(! \App\Models\SolicitudPase::whereIn('id_pase_salida', $ids)
+            ->orWhereIn('id_pase_entrada', $ids)->exists(), 'id_pase_relacionado',
+            'Este movimiento pertenece a una solicitud; utilice su aceptación o rechazo');
         if (! empty($values['id_caja_contraparte'])) {
             $box = \App\Models\Caja::findOrFail($values['id_caja_contraparte']);
             Access::check($box->id_subagencia === $day->id_subagencia && $box->id !== $day->id_caja,

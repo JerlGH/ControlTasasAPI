@@ -18,6 +18,7 @@ class TasaCambioArqueoController extends RegistroCajaController
     protected string $label = 'Tasa';
     protected string $plural = 'Tasas';
     protected bool $annul = false;
+    protected bool $adminWrites = true;
     protected array $immutable = ['id_arqueo', 'tipo', 'numero_precio'];
 
     protected function rules(?Model $record): array

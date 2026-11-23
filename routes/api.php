@@ -70,6 +70,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
    Route::put('/arqueos/{id}', [ArqueoController::class, 'update']);
    Route::delete('/arqueos/{id}', [ArqueoController::class, 'destroy']);
 
+   // Solicitudes de efectivo: salida y aceptación enlazadas en una transacción.
+   Route::get('/solicitudespases/destinatarios', [\App\Http\Controllers\Api\SolicitudPaseController::class, 'destinatarios']);
+   Route::get('/solicitudespases', [\App\Http\Controllers\Api\SolicitudPaseController::class, 'index']);
+   Route::get('/solicitudespases/{id}', [\App\Http\Controllers\Api\SolicitudPaseController::class, 'indexid'])->whereNumber('id');
+   Route::post('/solicitudespases', [\App\Http\Controllers\Api\SolicitudPaseController::class, 'store']);
+   Route::post('/solicitudespases/{id}/aceptar', [\App\Http\Controllers\Api\SolicitudPaseController::class, 'aceptar'])->whereNumber('id');
+   Route::post('/solicitudespases/{id}/rechazar', [\App\Http\Controllers\Api\SolicitudPaseController::class, 'rechazar'])->whereNumber('id');
+
    //EndPoints para Pases
    Route::get('/pases', [PasesController::class, 'index']);
    Route::get('/pases/{id}', [PasesController::class, 'indexid']);
